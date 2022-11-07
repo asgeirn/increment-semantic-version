@@ -1,11 +1,16 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: Asgeir S. Nilsen
+description: Increment Semantic Version
+author: asgeirn
 inputs:
-  milliseconds: # change this
+  current-version:
+    description: 'The current semantic version you want to increment'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  version-fragment:
+    description: 'The versions fragment you want to increment. possible options are [ major | feature | bug | alpha | beta | rc ]'
+    required: true
+outputs:
+  next-version:
+    description: 'The incremented version'
 runs:
   using: 'node16'
   main: 'dist/index.js'
