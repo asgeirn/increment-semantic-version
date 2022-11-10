@@ -47,28 +47,38 @@ export const updateVersion = ({current, fragment}: UpdateProps): string => {
       return format(Number(major), Number(minor), Number(patch) + 1, '', build)
   }
 
-  const pre = prerelease.match(PreRelease)
-  core.debug(`prerelease: ${pre}`)
+  if (prerelease) {
+    const pre = prerelease.match(PreRelease)
+    core.debug(`prerelease: ${pre}`)
 
-  if (pre) {
-    const [, level, increment] = pre
-    if (level === fragment) {
-      return format(
-        Number(major),
-        Number(minor),
-        Number(patch),
-        `${level}.${Number(increment) + 1}`,
-        build
-      )
-    } else if (fragment > level) {
-      return format(
-        Number(major),
-        Number(minor),
-        Number(patch),
-        `${fragment}.1`,
-        build
-      )
+    if (pre) {
+      const [, level, increment] = pre
+      if (level === fragment) {
+        return format(
+          Number(major),
+          Number(minor),
+          Number(patch),
+          `${level}.${Number(increment) + 1}`,
+          build
+        )
+      } else if (fragment > level) {
+        return format(
+          Number(major),
+          Number(minor),
+          Number(patch),
+          `${fragment}.1`,
+          build
+        )
+      }
     }
+  } else {
+    return format(
+      Number(major),
+      Number(minor),
+      Number(patch) + 1,
+      `${fragment}.1`,
+      build
+    )
   }
 
   throw new Error('Invalid SemVer transition')

@@ -28,6 +28,13 @@ test('Bump bug 1.2.3', async () => {
   expect(next).toEqual('1.2.4')
 })
 
+test('Bump beta 1.2.3', async () => {
+  const current = '1.2.3'
+  const fragment = 'beta'
+  const next = updateVersion({current, fragment})
+  expect(next).toEqual('1.2.4-beta.1')
+})
+
 test('Bump beta 1.2.3-beta.2', async () => {
   const current = '1.2.3-beta.2'
   const fragment = 'beta'

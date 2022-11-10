@@ -1,78 +1,60 @@
-<p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
-</p>
+# Increment Semantic Version
 
-# Create a JavaScript Action using TypeScript
+This is a GitHub action to bump a given semantic version, depending on a given version fragment.
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+## Inputs
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+### `current-version`
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+**Required** The current semantic version you want to increment. (e.g. 3.12.5)
 
-## Create an action from this template
+### `version-fragment`
 
-Click the `Use this Template` and provide the new repo details for your action
+**Required** The versions fragment you want to increment.
 
-## Code in Main
+Possible options are **[ major | feature | bug | alpha | beta | rc ]**
 
-> First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
+## Outputs
 
-Install the dependencies  
-```bash
-$ npm install
-```
+### `next-version`
 
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
-```
+The incremented version.
 
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
+## Example usage
 
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
+    - name: Bump release version
+      id: bump_version
+      uses: christian-draeger/increment-semantic-version@1.0.3
+      with:
+        current-version: '2.11.7-alpha.3'
+        version-fragment: 'feature'
+    - name: Do something with your bumped release version
+      run: echo ${{ steps.bump_version.outputs.next-version }}
+      # will print 2.12.0
 
-...
-```
+## input / output Examples
 
-## Change action.yml
+| version-fragment | current-version |   | output         |
+| ---------------- | --------------- | - | -------------- |
+| major            | 2.11.7          |   | 3.0.0          |
+| major            | 2.11.7-alpha.3  |   | 3.0.0          |
+| feature          | 2.11.7          |   | 2.12.0         |
+| feature          | 2.11.7-alpha.3  |   | 2.12.0         |
+| bug              | 2.11.7          |   | 2.11.8         |
+| bug              | 2.11.7-alpha.3  |   | 2.11.8         |
+| alpha            | 2.11.7          |   | 2.11.8-alpha.1 |
+| alpha            | 2.11.7-alpha.3  |   | 2.11.7-alpha.4 |
+| beta             | 2.11.7          |   | 2.11.8-beta.1  |
+| beta             | 2.11.7-alpha.3  |   | 2.11.7-beta.1  |
+| rc               | 2.11.7          |   | 2.11.8-rc.1    |
+| rc               | 2.11.7-alpha.3  |   | 2.11.7-rc.1    |
 
-The action.yml defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
+# License
+The scripts and documentation in this project are released under the [MIT License](LICENSE)
 
 ## Publish to a distribution branch
 
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
+Actions are run from GitHub repos so we will checkin the packed dist folder.
 
 Then run [ncc](https://github.com/zeit/ncc) and push the results:
 ```bash
@@ -84,7 +66,7 @@ $ git push origin releases/v1
 
 Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
 
-Your action is now published! :rocket: 
+Your action is now published! :rocket:
 
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
 
@@ -95,10 +77,9 @@ You can now validate the action by referencing `./` in a workflow in your repo (
 ```yaml
 uses: ./
 with:
-  milliseconds: 1000
+  current-version: 1.2.3
+  version-fragment: feature
 ```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
 
 ## Usage:
 
