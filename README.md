@@ -4,6 +4,8 @@
 
 This is a GitHub action to bump a given semantic version, depending on a given version fragment.
 
+Inspired by christian-draeger/increment-semantic-version
+
 ## Inputs
 
 ### `current-version`
@@ -26,7 +28,7 @@ The incremented version.
 
     - name: Bump release version
       id: bump_version
-      uses: christian-draeger/increment-semantic-version@1.0.3
+      uses: asgeirn/increment-semantic-version@1.0.3
       with:
         current-version: '2.11.7-alpha.3'
         version-fragment: 'feature'
