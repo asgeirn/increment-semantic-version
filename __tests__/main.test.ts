@@ -1,29 +1,63 @@
-import {wait} from '../src/wait'
-import * as process from 'process'
-import * as cp from 'child_process'
-import * as path from 'path'
 import {expect, test} from '@jest/globals'
+import {updateVersion} from '../src/version'
 
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
+test('Invalid version', async () => {
+  const current = 'foobar'
+  const fragment = 'major'
+  expect(() => updateVersion({current, fragment})).toThrowError()
 })
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
+test('Bump major 1.2.3', async () => {
+  const current = '1.2.3'
+  const fragment = 'major'
+  const next = updateVersion({current, fragment})
+  expect(next).toEqual('2.0.0')
 })
 
-// shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
-  const np = process.execPath
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecFileSyncOptions = {
-    env: process.env
-  }
-  console.log(cp.execFileSync(np, [ip], options).toString())
+test('Bump feature 1.2.3', async () => {
+  const current = '1.2.3'
+  const fragment = 'feature'
+  const next = updateVersion({current, fragment})
+  expect(next).toEqual('1.3.0')
+})
+
+test('Bump bug 1.2.3', async () => {
+  const current = '1.2.3'
+  const fragment = 'bug'
+  const next = updateVersion({current, fragment})
+  expect(next).toEqual('1.2.4')
+})
+
+test('Bump beta 1.2.3-beta.2', async () => {
+  const current = '1.2.3-beta.2'
+  const fragment = 'beta'
+  const next = updateVersion({current, fragment})
+  expect(next).toEqual('1.2.3-beta.3')
+})
+
+test('Bump rc 1.2.3-beta.2', async () => {
+  const current = '1.2.3-beta.2'
+  const fragment = 'rc'
+  const next = updateVersion({current, fragment})
+  expect(next).toEqual('1.2.3-rc.1')
+})
+
+test('Bump alpha 1.2.3-beta.2', async () => {
+  const current = '1.2.3-beta.2'
+  const fragment = 'alpha'
+  expect(() => updateVersion({current, fragment})).toThrowError()
+})
+
+test('Bump bug 1.2.3+abc', async () => {
+  const current = '1.2.3+abc'
+  const fragment = 'bug'
+  const next = updateVersion({current, fragment})
+  expect(next).toEqual('1.2.4+abc')
+})
+
+test('Bump rc 1.2.3-beta.2+abc', async () => {
+  const current = '1.2.3-beta.2+abc'
+  const fragment = 'rc'
+  const next = updateVersion({current, fragment})
+  expect(next).toEqual('1.2.3-rc.1+abc')
 })
