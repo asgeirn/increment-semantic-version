@@ -1,16 +1,23 @@
-name: Asgeir S. Nilsen
-description: Increment Semantic Version
-author: asgeirn
+name: Increment Semantic Version
+description: |
+  Bump a given semantic version by a release type ( major | minor | patch )
+  and add a possible postfix ( alpha | beta | rc )
+author: Asgeir S. Nilsen
+branding:
+  icon: tag
+  color: purple
 inputs:
   current-version:
-    description: 'The current semantic version you want to increment'
+    description: The current semantic version you want to increment
     required: true
   version-fragment:
-    description: 'The versions fragment you want to increment. possible options are [ major | feature | bug | alpha | beta | rc ]'
+    description: |
+      The versions fragment you want to increment.
+      Possible options are [ major | feature | bug | alpha | beta | rc ]
     required: true
 outputs:
   next-version:
-    description: 'The incremented version'
+    description: The incremented version
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: node16
+  main: dist/index.js
