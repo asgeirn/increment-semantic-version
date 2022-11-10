@@ -1,4 +1,4 @@
-name: Increment Semantic Version
+name: Increment Semantic Version (Typescript)
 description: |
   Bump a given semantic version by a release type ( major | minor | patch )
   and add a possible postfix ( alpha | beta | rc )
