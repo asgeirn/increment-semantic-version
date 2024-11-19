@@ -1,5 +1,7 @@
 [![build-test](https://github.com/asgeirn/increment-semantic-version/actions/workflows/test.yml/badge.svg)](https://github.com/asgeirn/increment-semantic-version/actions/workflows/test.yml)
 
+# ⚠️ ARCHIVED DUE TO LACK OF USAGE ⚠️
+
 # Increment Semantic Version
 
 This is a GitHub action to bump a given semantic version, depending on a given version fragment.
